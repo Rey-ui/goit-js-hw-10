@@ -65,13 +65,11 @@ function checkDates() {
             hasError = true;
         }
         clearInterval();
-        buttonEl.disabled = true;
         updateTimerDisplay("")
         return;
     } else {
         hasError = false;
         const difference = selectedDate - currentDate;
         updateTimerDisplay(difference);
-        buttonEl.disabled = false;
     }
 }

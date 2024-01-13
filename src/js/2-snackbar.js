@@ -2,7 +2,6 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 const formEl = document.querySelector(".form");
 const delayEl = document.querySelector("input[name='delay']");
-const radioEl = document.querySelector("input[name='state']:checked");
 formEl.addEventListener("submit", (e) => {
     e.preventDefault()
     createPopupMessage()
