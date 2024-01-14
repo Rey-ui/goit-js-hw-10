@@ -15,10 +15,25 @@ const options = {
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
-    onClose() {
-        clearInterval(intervalId);
-        intervalId = null;
-        updateTimerDisplay("");
+    onClose(selectedDates, dateStr, instance) {
+        const selectedDate = selectedDates[0];
+        const currentDate = new Date();
+
+        if (selectedDate < currentDate) {
+            if (!hasError) {
+                iziToast.show({
+                    title: 'Hey',
+                    message: 'Ви ввели невірну дату'
+                });
+                hasError = true;
+            }
+            intervalId = null;
+            clearInterval(intervalId);
+            buttonEl.disabled = true;
+            updateTimerDisplay("");
+        } else {
+            hasError = false;
+        }
     },
 };
 flatpickr(inputEl, options)
@@ -64,7 +79,8 @@ function checkDates() {
             });
             hasError = true;
         }
-        clearInterval();
+        intervalId = null;
+        clearInterval(intervalId);
         updateTimerDisplay("")
         return;
     } else {

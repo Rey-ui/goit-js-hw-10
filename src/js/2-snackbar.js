@@ -11,27 +11,28 @@ function createPopupMessage() {
     const selectedState = [...formEl.elements];
     const selectedStateFind = selectedState.find(radio => radio.checked).value;
     const promise = new Promise((resolve, reject) => {
-        if (selectedStateFind === 'fulfilled') {
-            resolve(delay);
-        } else {
-            reject(delay);
-        }
+        setTimeout(() => {
+            if (selectedStateFind === 'fulfilled') {
+                resolve(delay);
+            } else {
+                reject(delay);
+            }
+        }, delay)
     })
     promise.then((value) => {
-        setTimeout(() => {
-            iziToast.success({
-                title: "Success",
-                message: `✅ Fulfilled promise in ${value}ms`,
-            })
-        }, delay)
+
+        iziToast.success({
+            title: "Success",
+            message: `✅ Fulfilled promise in ${value}ms`,
+        })
+
     }
     ).catch((err) => {
-        setTimeout(() => {
-            iziToast.error({
-                title: "Error",
-                message: `❌ Rejected promise in ${err}ms`,
-            })
-        }, delay)
+
+        iziToast.error({
+            title: "Error",
+            message: `❌ Rejected promise in ${err}ms`,
+        })
+
     })
-    console.log(selectedStateFind);
 }
