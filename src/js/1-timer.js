@@ -16,6 +16,9 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates, dateStr, instance) {
+        clearInterval(intervalId);
+        intervalId = null;
+        updateTimerDisplay("");
         const selectedDate = selectedDates[0];
         const currentDate = new Date();
 
@@ -27,21 +30,22 @@ const options = {
                 });
                 hasError = true;
             }
-            intervalId = null;
-            clearInterval(intervalId);
             buttonEl.disabled = true;
             updateTimerDisplay("");
         } else {
             hasError = false;
+            buttonEl.disabled = false;
         }
     },
 };
 flatpickr(inputEl, options)
 buttonEl.addEventListener("click", () => {
-    clearInterval(intervalId);
-    intervalId = setInterval(() => {
-        checkDates()
-    }, 1000)
+    if (!buttonEl.disabled) {
+        clearInterval(intervalId);
+        intervalId = setInterval(() => {
+            checkDates();
+        }, 1000);
+    }
 });
 function convertMs(ms) {
     // Number of milliseconds per unit of time
@@ -81,6 +85,7 @@ function checkDates() {
         }
         intervalId = null;
         clearInterval(intervalId);
+        buttonEl.disabled = true;
         updateTimerDisplay("")
         return;
     } else {

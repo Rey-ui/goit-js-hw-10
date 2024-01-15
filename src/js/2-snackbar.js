@@ -9,30 +9,35 @@ formEl.addEventListener("submit", (e) => {
 function createPopupMessage() {
     const delay = delayEl.value;
     const selectedState = [...formEl.elements];
-    const selectedStateFind = selectedState.find(radio => radio.checked).value;
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
+    const selectedButton = selectedState.find(radio => radio.checked);
+    if (selectedButton) {
+        const selectedStateFind = selectedButton.value;
+        const promise = new Promise((resolve, reject) => {
+
             if (selectedStateFind === 'fulfilled') {
                 resolve(delay);
             } else {
                 reject(delay);
             }
+        })
+
+        setTimeout(() => {
+            promise.then((value) => {
+
+                iziToast.success({
+                    title: "Success",
+                    message: `✅ Fulfilled promise in ${value}ms`,
+                })
+
+            }
+            ).catch((err) => {
+
+                iziToast.error({
+                    title: "Error",
+                    message: `❌ Rejected promise in ${err}ms`,
+                })
+
+            })
         }, delay)
-    })
-    promise.then((value) => {
-
-        iziToast.success({
-            title: "Success",
-            message: `✅ Fulfilled promise in ${value}ms`,
-        })
-
     }
-    ).catch((err) => {
-
-        iziToast.error({
-            title: "Error",
-            message: `❌ Rejected promise in ${err}ms`,
-        })
-
-    })
 }
