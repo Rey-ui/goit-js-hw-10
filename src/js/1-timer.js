@@ -18,7 +18,6 @@ const options = {
     onClose(selectedDates, dateStr, instance) {
         clearInterval(intervalId);
         intervalId = null;
-        updateTimerDisplay("");
         const selectedDate = selectedDates[0];
         const currentDate = new Date();
 
@@ -31,7 +30,7 @@ const options = {
                 hasError = true;
             }
             buttonEl.disabled = true;
-            updateTimerDisplay("");
+
         } else {
             hasError = false;
             buttonEl.disabled = false;
@@ -41,10 +40,27 @@ const options = {
 flatpickr(inputEl, options)
 buttonEl.addEventListener("click", () => {
     if (!buttonEl.disabled) {
-        clearInterval(intervalId);
-        intervalId = setInterval(() => {
-            checkDates();
-        }, 1000);
+        const selectedDate = flatpickr.parseDate(inputEl.value);
+        const currentDate = new Date();
+
+        if (selectedDate < currentDate) {
+            if (!hasError) {
+                iziToast.show({
+                    title: 'Hey',
+                    message: 'Ви ввели невірну дату'
+                });
+                hasError = true;
+            }
+            clearInterval(intervalId);
+            buttonEl.disabled = true;
+
+        } else {
+            hasError = false;
+            clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                checkDates();
+            }, 1000);
+        }
     }
 });
 function convertMs(ms) {
@@ -66,11 +82,18 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 }
 function updateTimerDisplay(ms) {
-    const time = convertMs(ms);
-    spanDays.textContent = String(time.days).padStart(2, '0');
-    spanHours.textContent = String(time.hours).padStart(2, '0');
-    spanMinutes.textContent = String(time.minutes).padStart(2, '0');
-    spanSeconds.textContent = String(time.seconds).padStart(2, '0');
+    if (ms === null || isNaN(ms)) {
+        spanDays.textContent = "00";
+        spanHours.textContent = "00";
+        spanMinutes.textContent = "00";
+        spanSeconds.textContent = "00";
+    } else {
+        const time = convertMs(ms);
+        spanDays.textContent = String(time.days).padStart(2, '0');
+        spanHours.textContent = String(time.hours).padStart(2, '0');
+        spanMinutes.textContent = String(time.minutes).padStart(2, '0');
+        spanSeconds.textContent = String(time.seconds).padStart(2, '0');
+    }
 }
 function checkDates() {
     const selectedDate = flatpickr.parseDate(inputEl.value);
@@ -86,7 +109,7 @@ function checkDates() {
         intervalId = null;
         clearInterval(intervalId);
         buttonEl.disabled = true;
-        updateTimerDisplay("")
+
         return;
     } else {
         hasError = false;
