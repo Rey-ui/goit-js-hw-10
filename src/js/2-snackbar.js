@@ -6,9 +6,9 @@ let delay = 0;
 formEl.addEventListener("submit", (e) => {
     delay = delayEl.value;
     e.preventDefault()
-    setTimeout(() => {
-        createPopupMessage()
-    }, delay)
+
+    createPopupMessage()
+
 })
 function createPopupMessage() {
     const selectedState = [...formEl.elements];
@@ -24,22 +24,24 @@ function createPopupMessage() {
             }
         })
 
-        promise.then((value) => {
+        setTimeout(() => {
+            promise.then((value) => {
 
-            iziToast.success({
-                title: "Success",
-                message: `✅ Fulfilled promise in ${value}ms`,
+                iziToast.success({
+                    title: "Success",
+                    message: `✅ Fulfilled promise in ${value}ms`,
+                })
+
+            }
+            ).catch((err) => {
+
+                iziToast.error({
+                    title: "Error",
+                    message: `❌ Rejected promise in ${err}ms`,
+                })
+
             })
-
-        }
-        ).catch((err) => {
-
-            iziToast.error({
-                title: "Error",
-                message: `❌ Rejected promise in ${err}ms`,
-            })
-
-        })
+        }, delay)
 
     }
 }

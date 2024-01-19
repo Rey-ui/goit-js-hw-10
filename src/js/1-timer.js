@@ -58,7 +58,7 @@ buttonEl.addEventListener("click", () => {
             hasError = false;
             clearInterval(intervalId);
             intervalId = setInterval(() => {
-                checkDates();
+                checkDates(selectedDate);
             }, 1000);
         }
     }
@@ -95,8 +95,8 @@ function updateTimerDisplay(ms) {
         spanSeconds.textContent = String(time.seconds).padStart(2, '0');
     }
 }
-function checkDates() {
-    const selectedDate = flatpickr.parseDate(inputEl.value);
+function checkDates(selectedDate) {
+
     const currentDate = new Date();
     if (selectedDate < currentDate) {
         if (!hasError) {
@@ -106,10 +106,8 @@ function checkDates() {
             });
             hasError = true;
         }
-        intervalId = null;
-        clearInterval(intervalId);
         buttonEl.disabled = true;
-
+        updateTimerDisplay(null);
         return;
     } else {
         hasError = false;
