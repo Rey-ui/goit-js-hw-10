@@ -9,6 +9,7 @@ const spanHours = document.querySelector("span[data-hours]");
 const spanMinutes = document.querySelector("span[data-minutes]");
 const spanSeconds = document.querySelector("span[data-seconds]");
 let intervalId;
+buttonEl.disabled = true;
 let hasError = false;
 const options = {
     enableTime: true,
@@ -39,28 +40,26 @@ const options = {
 };
 flatpickr(inputEl, options)
 buttonEl.addEventListener("click", () => {
-    if (!buttonEl.disabled) {
-        const selectedDate = flatpickr.parseDate(inputEl.value);
-        const currentDate = new Date();
+    const selectedDate = flatpickr.parseDate(inputEl.value);
+    const currentDate = new Date();
 
-        if (selectedDate < currentDate) {
-            if (!hasError) {
-                iziToast.show({
-                    title: 'Hey',
-                    message: 'Ви ввели невірну дату'
-                });
-                hasError = true;
-            }
-            clearInterval(intervalId);
-            buttonEl.disabled = true;
-
-        } else {
-            hasError = false;
-            clearInterval(intervalId);
-            intervalId = setInterval(() => {
-                checkDates(selectedDate);
-            }, 1000);
+    if (selectedDate < currentDate) {
+        if (!hasError) {
+            iziToast.show({
+                title: 'Hey',
+                message: 'Ви ввели невірну дату'
+            });
+            hasError = true;
         }
+        clearInterval(intervalId);
+        buttonEl.disabled = true;
+
+    } else {
+        hasError = false;
+        clearInterval(intervalId);
+        intervalId = setInterval(() => {
+            checkDates(selectedDate);
+        }, 1000);
     }
 });
 function convertMs(ms) {
@@ -108,6 +107,7 @@ function checkDates(selectedDate) {
         }
         buttonEl.disabled = true;
         updateTimerDisplay(null);
+        clearInterval(intervalId);
         return;
     } else {
         hasError = false;
