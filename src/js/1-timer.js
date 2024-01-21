@@ -11,6 +11,7 @@ const spanSeconds = document.querySelector("span[data-seconds]");
 let intervalId;
 buttonEl.disabled = true;
 let hasError = false;
+let selectedDate;
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -18,8 +19,7 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates, dateStr, instance) {
         clearInterval(intervalId);
-        intervalId = null;
-        const selectedDate = selectedDates[0];
+        selectedDate = selectedDates[0];
         const currentDate = new Date();
 
         if (selectedDate < currentDate) {
@@ -40,7 +40,6 @@ const options = {
 };
 flatpickr(inputEl, options)
 buttonEl.addEventListener("click", () => {
-    const selectedDate = flatpickr.parseDate(inputEl.value);
     const currentDate = new Date();
 
     if (selectedDate < currentDate) {
