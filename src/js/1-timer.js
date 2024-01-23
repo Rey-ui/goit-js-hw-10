@@ -31,6 +31,7 @@ const options = {
                 hasError = true;
             }
             buttonEl.disabled = true;
+            updateTimerDisplay(null);
 
         } else {
             hasError = false;
@@ -40,26 +41,9 @@ const options = {
 };
 flatpickr(inputEl, options)
 buttonEl.addEventListener("click", () => {
-    const currentDate = new Date();
-
-    if (selectedDate < currentDate) {
-        if (!hasError) {
-            iziToast.show({
-                title: 'Hey',
-                message: 'Ви ввели невірну дату'
-            });
-            hasError = true;
-        }
-        clearInterval(intervalId);
-        buttonEl.disabled = true;
-
-    } else {
-        hasError = false;
-        clearInterval(intervalId);
-        intervalId = setInterval(() => {
-            checkDates(selectedDate);
-        }, 1000);
-    }
+    intervalId = setInterval(() => {
+        checkDates(selectedDate);
+    }, 1000);
 });
 function convertMs(ms) {
     // Number of milliseconds per unit of time

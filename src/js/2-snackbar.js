@@ -13,33 +13,32 @@ function createPopupMessage() {
     const delay = Number(delayEl.value);
     if (selectedButton) {
         const selectedStateFind = selectedButton.value;
-        setTimeout(() => {
-            const promise = new Promise((resolve, reject) => {
 
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
                 if (selectedStateFind === 'fulfilled') {
                     resolve(delay);
                 } else {
                     reject(delay);
                 }
+            }, delay)
+        })
+        promise.then((value) => {
+
+            iziToast.success({
+                title: "Success",
+                message: `✅ Fulfilled promise in ${value}ms`,
             })
 
-            promise.then((value) => {
+        }
+        ).catch((err) => {
 
-                iziToast.success({
-                    title: "Success",
-                    message: `✅ Fulfilled promise in ${value}ms`,
-                })
-
-            }
-            ).catch((err) => {
-
-                iziToast.error({
-                    title: "Error",
-                    message: `❌ Rejected promise in ${err}ms`,
-                })
-
+            iziToast.error({
+                title: "Error",
+                message: `❌ Rejected promise in ${err}ms`,
             })
-        }, delay)
+
+        })
     }
 
 }
