@@ -26,7 +26,7 @@ const options = {
             if (!hasError) {
                 iziToast.show({
                     title: 'Hey',
-                    message: 'Ви ввели невірну дату'
+                    message: 'You have entered an incorrect date'
                 });
                 hasError = true;
             }
