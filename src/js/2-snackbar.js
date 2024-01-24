@@ -8,19 +8,15 @@ formEl.addEventListener("submit", (e) => {
 
 })
 function createPopupMessage() {
-    const selectedState = [...formEl.elements];
-    const selectedButton = selectedState.find(radio => radio.checked);
+    const formElements = [...formEl.elements];
+    const selectedButton = formElements.find(radio => radio.checked);
     const delay = Number(delayEl.value);
     if (selectedButton) {
-        const selectedStateFind = selectedButton.value;
+        const selectedStateValue = selectedButton.value;
 
         const promise = new Promise((resolve, reject) => {
             setTimeout(() => {
-                if (selectedStateFind === 'fulfilled') {
-                    resolve(delay);
-                } else {
-                    reject(delay);
-                }
+                (selectedStateValue === 'fulfilled') ? resolve(delay) : reject(delay);
             }, delay)
         })
         promise.then((value) => {
@@ -38,6 +34,8 @@ function createPopupMessage() {
                 message: `❌ Rejected promise in ${err}ms`,
             })
 
+        }).finally(() => {
+            formEl.reset();
         })
     }
 

@@ -78,13 +78,12 @@ function updateTimerDisplay(ms) {
     }
 }
 function checkDates(selectedDate) {
-
     const currentDate = new Date();
     if (selectedDate < currentDate) {
         if (!hasError) {
             iziToast.show({
                 title: 'Hey',
-                message: 'Ви ввели невірну дату'
+                message: 'You have entered an incorrect date'
             });
             hasError = true;
         }
